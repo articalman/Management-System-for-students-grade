@@ -1,47 +1,56 @@
-
-#include <bits/stdc++.h> // ÍòÄÜÍ·ÎÄ¼ş
+/*
+ * @Author: yongzhiXie 
+ * @Date: 2020-04-08 11:54:14 
+ * @Last Modified by: yongzhiXie
+ * @Last Modified time: 2020-04-10 21:06:21
+ *///ctrl+alt+i
+#include <bits/stdc++.h> // ä¸‡èƒ½å¤´æ–‡ä»¶
 using namespace std;
-int amount = 0; // ÈËÊı
+int amount = 0; // äººæ•°
+
 struct student{
-    string name; //ĞÕÃû
-    double num; //Ñ§ºÅ
+    string name; //å§“å
+    double num; //å­¦å·
     double Math;
     double Chineses;
     double English;
-    double Major; // ×¨Òµ¿Î³É¼¨
-    double sum;   // ĞÂÔösum×Ö¶Î £¬ ·µ»Ø³É¼¨ºÍ
+    double Major; // ä¸“ä¸šè¯¾æˆç»©
+    double sum;   // æ–°å¢sumå­—æ®µ ï¼Œ è¿”å›æˆç»©å’Œ
     student *next;
 };
 
-void InitList(student *&L); // Á´±í³õÊ¼»¯
+void InitList(student *&L); // é“¾è¡¨åˆå§‹åŒ–
 inline void Next(student *&p, student *&pr);
-// ÄÚÁªº¯Êı£¬·½±ãÖØ¸´Ê¹ÓÃÁ´±í±éÀúµÄ´úÂë
+// å†…è”å‡½æ•°ï¼Œæ–¹ä¾¿é‡å¤ä½¿ç”¨é“¾è¡¨éå†çš„ä»£ç 
 inline void forDelete(student *&p , student *&pr , int &flag);
-// ÄÚÁªº¯Êı£¬ÎªÉ¾³ıº¯ÊıÌá¹©É¾³ı¶àÑùĞÔ
-void Ins(student *&L, int n);       // ²åÈëº¯Êı
-void Display(student *L);           // Êä³öº¯Êı
-void Destroy(student *&L);          // Îö¹¹º¯Êı£¬»ØÊÕ½áµã£¬±ÜÃâ¿Õ¼äÀË·Ñ
-void Delete(student *&L, double num , int n);    // É¾³ıº¯Êı£¬¸ù¾İÑ§ºÅ/³É¼¨
-void Delete(student *&L, string s);    //É¾³ıº¯ÊıÖØÔØ£¬¸ù¾İĞÕÃûÉ¾³ı
-void show(student *p); //ÅäºÏmodifyº¯Êı£¬ÏÔÊ¾ĞŞ¸ÄºóµÄ½á¹û
-void modify(student *&L, double n);    // ĞŞ¸Äº¯Êı£¬ÓÃÓÚĞŞ¸Ä¼ÇÂ¼µÄÖµ
-void IsExcellent(student *&L);    // ²éÕÒ¸÷¿Æ>90µÄÓÅĞãÑ§Éú ²¢Êä³ö
-void PassOrnot(student *&L);     // ÏÔÊ¾²¹¿¼Ãûµ¥²¢Êä³ö
-void exchange(student *&p, student *&pr);  // ½»»»º¯Êı£¬´îÅäsortº¯ÊıÊ¹ÓÃ 
-void Sort(student *&L, int n); // ÅÅĞòº¯Êı£¨°´×Ü·ÖÅÅĞò£©n=1ÉıĞò n=0½µĞò
-void Menu();  // ´òÓ¡ÏµÍ³½çÃæ
-void about();  //ÏÔÊ¾¹ØÓÚÒ³Ãæ
+// å†…è”å‡½æ•°ï¼Œä¸ºåˆ é™¤å‡½æ•°æä¾›åˆ é™¤å¤šæ ·æ€§
+void Ins(student *&L, int n);       // æ’å…¥å‡½æ•°
+void Display(student *L);           // è¾“å‡ºå‡½æ•°
+void Destroy(student *&L);          // ææ„å‡½æ•°ï¼Œå›æ”¶ç»“ç‚¹ï¼Œé¿å…ç©ºé—´æµªè´¹
+void Delete(student *&L, double num , int n);    // åˆ é™¤å‡½æ•°ï¼Œæ ¹æ®å­¦å·/æˆç»©
+void Delete(student *&L, string s);    //åˆ é™¤å‡½æ•°é‡è½½ï¼Œæ ¹æ®å§“ååˆ é™¤
+void show(student *p); //é…åˆmodifyå‡½æ•°ï¼Œæ˜¾ç¤ºä¿®æ”¹åçš„ç»“æœ
+void modify(student *&L, double n);    // ä¿®æ”¹å‡½æ•°ï¼Œç”¨äºä¿®æ”¹è®°å½•çš„å€¼
+void IsExcellent(student *&L);    // æŸ¥æ‰¾å„ç§‘>90çš„ä¼˜ç§€å­¦ç”Ÿ å¹¶è¾“å‡º
+void PassOrnot(student *&L);     // æ˜¾ç¤ºè¡¥è€ƒåå•å¹¶è¾“å‡º
+void exchange(student *&p, student *&pr);  // äº¤æ¢å‡½æ•°ï¼Œæ­é…sortå‡½æ•°ä½¿ç”¨ 
+void Sort(student *&L, int n , int m); 
+// æ’åºå‡½æ•° n=1å‡åº n=0é™åº  m é€‰æ‹©æ’åºå‚æ•°
+void Menu();  // æ‰“å°ç³»ç»Ÿç•Œé¢
+void about();  //æ˜¾ç¤ºå…³äºé¡µé¢
+void FileOutput(student *L); // ä¿å­˜åˆ°æ–‡ä»¶
+void FileInput(student *&L); // ä»æ–‡ä»¶ä¸­è¯»å–æ•°æ®
 
 int main(){
     student *head;
     InitList(head);
-    system("title Ñ§Éú³É¼¨¹ÜÀíÏµÍ³V2.0");//ÉèÖÃ¿ØÖÆÌ¨±êÌâ
-    system("color 0B");// ÉèÖÃ¿ØÖÆÌ¨ÑÕÉ«£¬±³¾°ºÚÉ«£¬×ÖÌåÀ¶É«
+    system("title å­¦ç”Ÿæˆç»©ç®¡ç†ç³»ç»ŸV3.0");//è®¾ç½®æ§åˆ¶å°æ ‡é¢˜
+    system("color 0B");// è®¾ç½®æ§åˆ¶å°é¢œè‰²ï¼ŒèƒŒæ™¯é»‘è‰²ï¼Œå­—ä½“è“è‰²
     int n, m;
     
-    while (1){ //½øÈëÏµÍ³£¬Ö´ĞĞ²Ù×÷
+    while (1){ //è¿›å…¥ç³»ç»Ÿï¼Œæ‰§è¡Œæ“ä½œ
         Menu();
-        cout << "ÇëÊäÈëÄúÒª½øĞĞµÄ²Ù×÷£º";
+        cout << "è¯·è¾“å…¥æ‚¨è¦è¿›è¡Œçš„æ“ä½œï¼š";
         cin >> m;
         switch (m){
             case 0:{
@@ -51,76 +60,100 @@ int main(){
             }
             case 1:{
                 system("cls");
-                cout << "ÇëÊäÈëĞÂÔöÈËÊı£º ";
+                cout << "è¯·è¾“å…¥æ–°å¢äººæ•°ï¼š ";
                 cin >> n;
                 if (n < 0){
-                    cout << "\nÈËÊıÓĞÎó£¡\n";
+                    cout << "\näººæ•°æœ‰è¯¯ï¼\n";
                 }else{
                     Ins(head, n);
-                    cout << "\nÂ¼Èëºó½á¹û" << endl;
+                    cout << "\nå½•å…¥åç»“æœ" << endl;
                     Display(head);
                 }
                 break;
             }
-            case 2:{ // ĞÂÔöÑ¡ÔñÉ¾³ıµÄ·½Ê½
+            case 2:{ // æ–°å¢é€‰æ‹©åˆ é™¤çš„æ–¹å¼
                 system("cls");
-                cout << "ÇëÑ¡ÔñÉ¾³ıµÄ·½Ê½£º\n";
-                cout << "1.ĞÕÃû\n";
-                cout << "2.Ñ§ºÅ\n";
-                cout << "3.ÓïÎÄ\n";
-                cout << "4.ÊıÑ§\n";
-                cout << "5.Ó¢Óï\n";
-                cout << "6.×¨Òµ¿Î\n";
-                cout << "7.×Ü³É¼¨" << endl;
+                cout << "è¯·é€‰æ‹©åˆ é™¤çš„æ–¹å¼ï¼š\n";
+                cout << "1.å§“å\n";
+                cout << "2.å­¦å·\n";
+                cout << "3.è¯­æ–‡\n";
+                cout << "4.æ•°å­¦\n";
+                cout << "5.è‹±è¯­\n";
+                cout << "6.ä¸“ä¸šè¯¾\n";
+                cout << "7.æ€»æˆç»©" << endl;
                 cin >> n;
-                if(n == 1){ // nameÊÇstringÀàĞÍµÄ£¬ĞèÒªº¯ÊıÖØÔØ
+                if(n == 1){ // nameæ˜¯stringç±»å‹çš„ï¼Œéœ€è¦å‡½æ•°é‡è½½
                     string s; 
-                    cout << "ºÃµÄ£¬ĞèÒªÄúÊäÈë¶ÔÓ¦µÄÑ§ÉúĞÕÃû£º";
+                    cout << "å¥½çš„ï¼Œéœ€è¦æ‚¨è¾“å…¥å¯¹åº”çš„å­¦ç”Ÿå§“åï¼š";
                     cin >> s;
                     Delete(head,s);
                 }else if(n > 1 && n <= 6){
                     double n1;
-                    cout << "ºÃµÄ£¬ĞèÒªÄúÊäÈë¶ÔÓ¦µÄÑ§ÉúÑ§ºÅ»ò³É¼¨£º";
+                    cout << "å¥½çš„ï¼Œéœ€è¦æ‚¨è¾“å…¥å¯¹åº”çš„å­¦ç”Ÿå­¦å·æˆ–æˆç»©ï¼š";
                     cin >> n1;
                     Delete(head,n1,n);
                 }else{
-                    cout << "\nÉ¾³ıÊ§°Ü£¬ÇëÊäÈëÓĞĞ§µÄÊı¾İ\n";
+                    cout << "\nåˆ é™¤å¤±è´¥ï¼Œè¯·è¾“å…¥æœ‰æ•ˆçš„æ•°æ®\n";
                 }
-                cout << "É¾³ıºó½á¹ûÎª£º" << endl;
+                cout << "\nåˆ é™¤åç»“æœä¸ºï¼š" << endl;
                 Display(head);
                 break;
             }
-            case 3:{
+            case 3:{ // ä¿®æ”¹
                 system("cls");
-                cout << "ÇëÊäÈëÒªĞŞ¸ÄµÄÑ§ÉúÑ§ºÅ£º";
+                cout << "è¯·è¾“å…¥è¦ä¿®æ”¹çš„å­¦ç”Ÿå­¦å·ï¼š";
                 cin >> n;
                 modify(head, n);
                 break;
             }
-            case 4:{
+            case 4:{ //è¾“å‡º
                 system("cls");
                 Display(head);
                 break;
             }
-            case 5:{
+            case 5:{ //è¡¥è€ƒåå•
                 system("cls");
                 PassOrnot(head);
                 break;
             }
-            case 6:{
+            case 6:{ //ä¼˜ç§€å­¦ç”Ÿ
                 system("cls");
                 IsExcellent(head);
                 break;
             }
-            case 7:{
+            case 7:{ // æ’åº
                 system("cls");
-                cout << "ÇëÊäÈëÅÅĞò·½Ê½£º\n";
-                cout << "1ÉıĞò 0½µĞò\n";
+                cout << "è¯·é€‰æ‹©æ’åºçš„å‚ç…§ï¼š\n";
+                cout << "0.æ€»æˆç»©\n";
+                cout << "1.å§“å\n";
+                cout << "2.å­¦å·\n";
+                cout << "3.è¯­æ–‡\n";
+                cout << "4.æ•°å­¦\n";
+                cout << "5.è‹±è¯­\n";
+                cout << "6.ä¸“ä¸šè¯¾\n";
+                cin >> m;
+                puts("");
+                cout << "è¯·è¾“å…¥æ’åºæ–¹å¼ï¼š\n";
+                cout << "1å‡åº 0é™åº\n";
                 cin >> n;
-                if(n != 0 && n != 1)
+                if(n != 0 && n != 1 || m < 0 || m > 6){
+                    cout << "å¼‚å¸¸è¾“å…¥\n";
                     break;
-                Sort(head,n);
+                }
+                Sort(head,n,m);
                 Display(head);
+                break;
+            }
+            case 8:{ // æ–‡ä»¶è¯»å–
+                system("cls");
+                FileInput(head);
+                cout << "\nå½•å…¥åç»“æœ" << endl;
+                Display(head);
+                break;
+            }
+            case 9:{ //ä¿å­˜è‡³æ–‡ä»¶
+                system("cls");
+                FileOutput(head);
                 break;
             }
             default:{
@@ -130,14 +163,14 @@ int main(){
         char ch;
         cout << endl;
         cout << "----------------------------------------------------------\n";
-        cout << "                      ÊÇ·ñ¼ÌĞø(y/n)£º";
+        cout << "                      æ˜¯å¦ç»§ç»­(y/n)ï¼š";
         cin >> ch;
         if (ch == 'y'){
             system("cls");
             continue;
         }
         else
-            exit(0); // ÍË³öÑ­»·£¬³ÌĞò½áÊø
+            exit(0); // é€€å‡ºå¾ªç¯ï¼Œç¨‹åºç»“æŸ
     }
     Destroy(head);
     system("pause");
@@ -149,31 +182,41 @@ void InitList(student *&L){
     L->next = NULL;
 }
 inline void Next(student *&p, student *&pr){
-    pr = p; // ÄÚÁªº¯Êı£¬·½±ãÖØ¸´Ê¹ÓÃÁ´±í±éÀúµÄ´úÂë
+    pr = p; // å†…è”å‡½æ•°ï¼Œæ–¹ä¾¿é‡å¤ä½¿ç”¨é“¾è¡¨éå†çš„ä»£ç 
     p = p->next;
 }
 inline void forDelete(student *&p , student *&pr ,int &flag){
-    pr->next = p->next; // ½«ºóÒ»¸ö½áµãÁ¬½Óµ½Ç°Ò»¸ö½áµã
+    pr->next = p->next; // å°†åä¸€ä¸ªç»“ç‚¹è¿æ¥åˆ°å‰ä¸€ä¸ªç»“ç‚¹
     //delete[]p;
     amount--;
     flag = 1;
 }
-void Ins(student *&L, int n){         // ²ÉÓÃÎ²²å·¨ÊµÏÖ
-    student *p = L->next, *pr = L; //pr¸³³õÖµ£¬±ÜÃâ²åÈëÊ×½áµãµÄÊ±ºòÑ­»·²»»áÖ´ĞĞ
+void Ins(student *&L, int n){         // é‡‡ç”¨å°¾æ’æ³•å®ç°
+    student *p = L->next, *pr = L; //prèµ‹åˆå€¼ï¼Œé¿å…æ’å…¥é¦–ç»“ç‚¹çš„æ—¶å€™å¾ªç¯ä¸ä¼šæ‰§è¡Œ
     while (p != NULL){
         Next(p, pr);
-    } // ¶¨Î»µ½Á´±íÄ©Î²
+    } // å®šä½åˆ°é“¾è¡¨æœ«å°¾
     while (n--){
         student *p1 = new student;
         string name;
         double chinese, math, english, major,num;
-        cout << "ÇëÊäÈëÑ§ÉúĞÅÏ¢ £º" << endl;
-        cout << "ĞÕÃû    Ñ§ºÅ    ÓïÎÄ    ÊıÑ§    Ó¢Óï   ×¨Òµ¿Î" << endl;
-        cin >> name >> num >> chinese >> math >> english >> major;
+        cout << "è¯·è¾“å…¥å­¦ç”Ÿä¿¡æ¯ ï¼š" << endl;
+        cout << "\tå§“åï¼š";
+        cin >> name;
+        cout << "\tå­¦å·ï¼š";
+        cin >> num;
+        cout << "\tè¯­æ–‡ï¼š";
+        cin >> chinese;
+        cout << "\tæ•°å­¦ï¼š";
+        cin >> math;
+        cout << "\tè‹±è¯­ï¼š";
+        cin >> english;
+        cout << "      ä¸“ä¸šè¯¾ï¼š";
+        cin >> major;
         if (chinese < 0 || chinese > 100 || math < 0 || math > 100 ||
             english < 0 || english > 100 || major < 0 || major > 100)
-        {  // Ôö¼ÓÊäÈëÏŞ¶¨Ìõ¼ş 0<³É¼¨<100 
-            cout << "\nÇëÈ·±£²åÈëÊı¾İµÄÕıÈ·ĞÔ£¡\n";
+        {  // å¢åŠ è¾“å…¥é™å®šæ¡ä»¶ 0<æˆç»©<100 
+            cout << "\nè¯·ç¡®ä¿æ’å…¥æ•°æ®çš„æ­£ç¡®æ€§ï¼\n";
             break;
         }
         amount++;
@@ -186,25 +229,27 @@ void Ins(student *&L, int n){         // ²ÉÓÃÎ²²å·¨ÊµÏÖ
         p1->Major = major;
         p1->sum = p1->Chineses + p1->English + p1->Major + p1->Math;
 
-        pr->next = p1; // ºÍÇ°ÃæµÄ½ÚµãÏàÁ¬
-        //pr = p1;   // Ö¸Ïòµ±Ç°½Úµã
-        pr = pr->next; //Ö¸Ïòºó¼Ì½áµã
+        pr->next = p1; // å’Œå‰é¢çš„èŠ‚ç‚¹ç›¸è¿
+        //pr = p1;   // æŒ‡å‘å½“å‰èŠ‚ç‚¹
+        pr = pr->next; //æŒ‡å‘åç»§ç»“ç‚¹
         p1->next = NULL;
-        puts(""); //Êä³ö»»ĞĞ¿ØÖÆ¸ñÊ½
+        puts(""); //è¾“å‡ºæ¢è¡Œæ§åˆ¶æ ¼å¼
     }
 }
+
 void Display(student *L){
     if (L->next == NULL){
-        cout << "³É¼¨¹ÜÀíÏµÍ³Îª¿Õ" << endl;
+        cout << "æˆç»©ç®¡ç†ç³»ç»Ÿä¸ºç©º" << endl;
     }
     while (L->next != NULL){
         L = L->next;
-        cout << "ĞÕÃû    Ñ§ºÅ    ÓïÎÄ    ÊıÑ§    Ó¢Óï   ×¨Òµ¿Î    ×Ü³É¼¨" << endl;
+        cout << "å§“å    å­¦å·    è¯­æ–‡    æ•°å­¦    è‹±è¯­   ä¸“ä¸šè¯¾    æ€»æˆç»©" << endl;
         cout << L->name;
         printf("\t%.lf\t%.2lf\t%.2lf\t%.2lf\t%.2lf\t%.2lf\t\n", L->num, L->Chineses, L->Math, L->English, L->Major,L->sum);
     }
-    cout << "\n±íÖĞÈËÊı¹²¼Æ£º" << amount << "ÈË\n";
+    cout << "\nè¡¨ä¸­äººæ•°å…±è®¡ï¼š" << amount << "äºº\n";
 }
+
 void Destroy(student *&L){
     student *p = L->next, *pr = L;
     while (p != NULL){
@@ -213,19 +258,20 @@ void Destroy(student *&L){
     }
     //delete[] p;
 }
+
 void Delete(student *&L, double num , int n){
-    // num±íÊ¾Êı¾İµÄÖµ  ¸ù¾İnÀ´Ñ¡ÔñÖ´ĞĞÄÄ²½ÅĞ¶Ï
+    // numè¡¨ç¤ºæ•°æ®çš„å€¼  æ ¹æ®næ¥é€‰æ‹©æ‰§è¡Œå“ªæ­¥åˆ¤æ–­
     student *p = L->next, *pr = L;
-    int flag = 0; // ÅĞ¶Ï±êÖ¾
+    int flag = 0; // åˆ¤æ–­æ ‡å¿—
     if (p == NULL)
-        cout << "\nÑ§Éú±íÖĞÃ»ÓĞÈÎºÎÑ§Éú¼ÇÂ¼£¡\n";
+        cout << "\nå­¦ç”Ÿè¡¨ä¸­æ²¡æœ‰ä»»ä½•å­¦ç”Ÿè®°å½•ï¼\n";
     else{
         while (p != NULL){
             switch (n){
                 case 2:{
                     if (p->num == num){  
                         forDelete(p,pr,flag);
-                        break; // breakÖ»ÄÜÔÚ±í´ïÊ½ÄÚ£¬²»ÄÜ·ÅÈëÄÚÁªº¯Êı
+                        break; // breakåªèƒ½åœ¨è¡¨è¾¾å¼å†…ï¼Œä¸èƒ½æ”¾å…¥å†…è”å‡½æ•°
                     }
                 }
                 case 3:{
@@ -258,53 +304,56 @@ void Delete(student *&L, double num , int n){
                         break;
                     }
                 }
-                default:{ //ÆäÊµÔÚ²ÎÊı´«½øº¯ÊıÇ°¾ÍÒÑ¾­ÅĞ¶Ï¹ıÁË£¬¿ÉÒÔ²»ÓÃĞ´
+                default:{ //å…¶å®åœ¨å‚æ•°ä¼ è¿›å‡½æ•°å‰å°±å·²ç»åˆ¤æ–­è¿‡äº†ï¼Œå¯ä»¥ä¸ç”¨å†™
                     break;
                 }
             }
-            Next(p, pr); // ¼ÌĞøÖ¸Ïòºó¼Ì½Úµã
+            Next(p, pr); // ç»§ç»­æŒ‡å‘åç»§èŠ‚ç‚¹
         }
     }
     if (p == NULL && flag == 0)
-        cout << "±§Ç¸£¬²éÎŞ´ËÈË" << endl;
+        cout << "æŠ±æ­‰ï¼ŒæŸ¥æ— æ­¤äºº" << endl;
 }
+
 void Delete(student *&L, string s){
     student *p = L->next, *pr = L;
     if (p == NULL)
-        cout << "\nÑ§Éú±íÖĞÃ»ÓĞÈÎºÎÑ§Éú¼ÇÂ¼£¡\n";
+        cout << "\nå­¦ç”Ÿè¡¨ä¸­æ²¡æœ‰ä»»ä½•å­¦ç”Ÿè®°å½•ï¼\n";
     else
     {
         while (p != NULL)
         {
             if (p->name == s)
             {
-                pr->next = p->next; // ½«ºóÒ»¸ö½áµãÁ¬½Óµ½Ç°Ò»¸ö½áµã
+                pr->next = p->next; // å°†åä¸€ä¸ªç»“ç‚¹è¿æ¥åˆ°å‰ä¸€ä¸ªç»“ç‚¹
                 //delete[]p;
                 amount--;
                 break;
             }
-            Next(p, pr); // ¼ÌĞøÖ¸Ïòºó¼Ì½Úµã
+            Next(p, pr); // ç»§ç»­æŒ‡å‘åç»§èŠ‚ç‚¹
         }
     }
     if (p == NULL)
-        cout << "±§Ç¸£¬²éÎŞ´ËÈË" << endl;
+        cout << "æŠ±æ­‰ï¼ŒæŸ¥æ— æ­¤äºº" << endl;
 }
-void show(student *p){ // ´òÓ¡ĞŞ¸ÄºóµÄ½á¹û
-    cout << "\nĞŞ¸Ä³É¹¦!\nĞŞ¸ÄºóµÄ³É¼¨Îª£º" << endl;
-    cout << "ĞÕÃû    Ñ§ºÅ    ÓïÎÄ    ÊıÑ§    Ó¢Óï   ×¨Òµ¿Î    ×Ü³É¼¨" << endl;
+
+void show(student *p){ // æ‰“å°ä¿®æ”¹åçš„ç»“æœ
+    cout << "\nä¿®æ”¹æˆåŠŸ!\nä¿®æ”¹åçš„æˆç»©ä¸ºï¼š" << endl;
+    cout << "å§“å    å­¦å·    è¯­æ–‡    æ•°å­¦    è‹±è¯­   ä¸“ä¸šè¯¾    æ€»æˆç»©" << endl;
     cout << p->name;
     printf("\t%.lf\t%.2lf\t%.2lf\t%.2lf\t%.2lf\t%.2lf\t\n", p->num, p->Chineses, p->Math, p->English, p->Major,p->sum);
 }
+
 void modify(student *&L, double n){
     student *p = L->next, *pr = L;
     while (p != NULL){
         if (p->num == n){
-            cout << "\nÑ§ºÅ¡ª¡ª>n\nChinese¡ª¡ª>c\nMath¡ª¡ª>m\nEnglish¡ª¡ª>e\nMajor¡ª¡ª>M" << endl;
-            cout << "\nÇëÑ¡ÔñĞŞ¸ÄµÄÊôĞÔ£º";
+            cout << "\nå­¦å·â€”â€”>n\nChineseâ€”â€”>c\nMathâ€”â€”>m\nEnglishâ€”â€”>e\nMajorâ€”â€”>M" << endl;
+            cout << "\nè¯·é€‰æ‹©ä¿®æ”¹çš„å±æ€§ï¼š";
             char ch;
             double grade,num;
             cin >> ch;
-            cout << "ÇëÊäÈëĞŞ¸ÄºóµÄ³É¼¨/Ñ§ºÅ£º";
+            cout << "è¯·è¾“å…¥ä¿®æ”¹åçš„æˆç»©/å­¦å·ï¼š";
             if (ch == 'n'){
                 cin >> num;
             }else{
@@ -318,7 +367,7 @@ void modify(student *&L, double n){
                 }
                 case 'c':{
                     p->Chineses = grade;
-                    show(p); //µ÷ÓÃº¯Êı´òÓ¡ĞŞ¸ÄºóµÄ½á¹û
+                    show(p); //è°ƒç”¨å‡½æ•°æ‰“å°ä¿®æ”¹åçš„ç»“æœ
                     break;
                 }
                 case 'm':{
@@ -337,7 +386,7 @@ void modify(student *&L, double n){
                     break;
                 }
                 default:{
-                    cout << "\nĞŞ¸ÄÊ§°Ü£¬ÇëÊäÈëÓĞĞ§µÄ¼üÖµ£¡" << endl;
+                    cout << "\nä¿®æ”¹å¤±è´¥ï¼Œè¯·è¾“å…¥æœ‰æ•ˆçš„é”®å€¼ï¼" << endl;
                     break;
                 }
             }
@@ -345,45 +394,48 @@ void modify(student *&L, double n){
         Next(p, pr);
     }
 }
+
 void IsExcellent(student *&L){
     student *p = L->next, *pr = L;
     int flag = 0;
     while(p != NULL){
         if(p->Chineses >= 90 && p->English >= 90 && p->Major >= 90 && p->Math >= 90){
-            cout << "Ñ§ºÅÎª" << p->num << "µÄ" << p->name << "Í¬Ñ§ÊÇÒ»¸ö¼â×ÓÉú\n";
-            printf("ÓïÎÄ£º%.2lf\tÊıÑ§£º%.2lf\tÓ¢Óï£º%.2lf\t×¨Òµ¿Î£º%.2lf\t×Ü³É¼¨:%.2lf\t\n", p->Chineses, p->Math, p->English, p->Major,p->sum);
+            cout << "å­¦å·ä¸º" << p->num << "çš„" << p->name << "åŒå­¦æ˜¯ä¸€ä¸ªå°–å­ç”Ÿ\n";
+            printf("è¯­æ–‡ï¼š%.2lf\tæ•°å­¦ï¼š%.2lf\tè‹±è¯­ï¼š%.2lf\tä¸“ä¸šè¯¾ï¼š%.2lf\tæ€»æˆç»©:%.2lf\t\n", p->Chineses, p->Math, p->English, p->Major,p->sum);
             flag = 1;
         }
         Next(p,pr);
     }
     if(flag == 0)
-        cout << "Ò»¸ö¶¼Ã»ÓĞÂğ£¿Õâ½ìÑ§ÉúÒ²Ì«ÄÑ´øÁË°É\n";
+        cout << "ä¸€ä¸ªéƒ½æ²¡æœ‰å—ï¼Ÿè¿™å±Šå­¦ç”Ÿä¹Ÿå¤ªéš¾å¸¦äº†å§\n";
 }
+
 void PassOrnot(student *&L){
     student *p = L->next, *pr = L;
-    int flag = 1; // ÅĞ¶ÏÑ§Éú²»¼°¸ñµÄ±ê¼Ç
+    int flag = 1; // åˆ¤æ–­å­¦ç”Ÿä¸åŠæ ¼çš„æ ‡è®°
     while(p != NULL){
         if(p->Chineses < 60){
             flag = 0;
-            cout << p->name << "µÄÓïÎÄ³É¼¨ÊÇ£º" << p->Chineses << ",²»ºÏ¸ñ\n";
+            cout << p->name << "çš„è¯­æ–‡æˆç»©æ˜¯ï¼š" << p->Chineses << ",ä¸åˆæ ¼\n";
         }
         if(p->English < 60){
             flag = 0;
-            cout << p->name << "µÄÓ¢Óï³É¼¨ÊÇ£º" << p->English << ",²»ºÏ¸ñ\n";
+            cout << p->name << "çš„è‹±è¯­æˆç»©æ˜¯ï¼š" << p->English << ",ä¸åˆæ ¼\n";
         }
         if(p->Major < 60){
             flag = 0;
-            cout << p->name << "µÄ×¨Òµ¿Î³É¼¨ÊÇ£º" << p->Major << ",²»ºÏ¸ñ\n";
+            cout << p->name << "çš„ä¸“ä¸šè¯¾æˆç»©æ˜¯ï¼š" << p->Major << ",ä¸åˆæ ¼\n";
         }
         if(p->Math < 60){
             flag = 0;
-            cout << p->name << "µÄÊıÑ§³É¼¨ÊÇ£º" << p->Math << ",²»ºÏ¸ñ\n";
+            cout << p->name << "çš„æ•°å­¦æˆç»©æ˜¯ï¼š" << p->Math << ",ä¸åˆæ ¼\n";
         }
         Next(p, pr);
     }
     if(p == NULL && flag == 1)
-        cout << "ÕâÅúÑ§Éú¶¼ºÜÓÅĞã£¬ÔÙ½ÓÔÙÀø£¡\n";
+        cout << "è¿™æ‰¹å­¦ç”Ÿéƒ½å¾ˆä¼˜ç§€ï¼Œå†æ¥å†åŠ±ï¼\n";
 }
+
 void exchange(student *&p , student *&pr){
     student *t = new student;
     t->next = NULL;
@@ -411,20 +463,98 @@ void exchange(student *&p , student *&pr){
     pr->num = t->num;
     pr->sum = t->sum;
 
-    //delete [] t; tÒÑ¾­Ö¸ÏòÁË±ğµÄµØ·½£¬»áÓÉÏµÍ³ÊÍ·Å£¬ÊÖ¶¯ÊÍ·Å»áÔì³É¶à´ÎÊÍ·Åµ¼ÖÂ³ö´í
+    //delete [] t; tå·²ç»æŒ‡å‘äº†åˆ«çš„åœ°æ–¹ï¼Œä¼šç”±ç³»ç»Ÿé‡Šæ”¾ï¼Œæ‰‹åŠ¨é‡Šæ”¾ä¼šé€ æˆå¤šæ¬¡é‡Šæ”¾å¯¼è‡´å‡ºé”™
 }
-void Sort(student *&L , int n){  // ²ÉÓÃÃ°ÅİÅÅĞò
-    student *pr = L->next , *p; //Ìø¹ıÍ·½Úµã£¬´ÓÊ×½Úµã¿ªÊ¼
+
+void Sort(student *&L , int n , int m){  // é‡‡ç”¨å†’æ³¡æ’åº
+    student *pr = L->next , *p; //è·³è¿‡å¤´èŠ‚ç‚¹ï¼Œä»é¦–èŠ‚ç‚¹å¼€å§‹
     while(pr != NULL){
-        p = pr->next; // pÊ¼ÖÕÖ¸ÏòprµÄÏÂ¸ö½Úµã 
-        while (p != NULL){  //ÒÀ´ÎºÍºó¼Ì½Úµã±È½Ï
-            if(n == 1){   // ÉıĞò
-                if(pr->sum > p->sum){
-                    exchange(pr,p);
+        p = pr->next; // på§‹ç»ˆæŒ‡å‘prçš„ä¸‹ä¸ªèŠ‚ç‚¹ 
+        while (p != NULL){  //ä¾æ¬¡å’Œåç»§èŠ‚ç‚¹æ¯”è¾ƒ
+            switch(m){
+                case 0:{ // æ€»æˆç»©
+                    if(n == 1){   // å‡åº
+                        if(pr->sum > p->sum){
+                            exchange(pr,p);
+                        }
+                    }else if(n == 0){ //é™åº
+                        if(pr->sum < p->sum){
+                            exchange(pr,p);
+                        }
+                    }
+                    break;
                 }
-            }else if(n == 0){ //½µĞò
-                if(pr->sum < p->sum){
-                    exchange(pr,p);
+                case 1:{ //å§“å
+                    if (n == 1){ // å‡åº
+                        if (pr->name > p->name){
+                            exchange(pr, p);
+                        }
+                    }else if (n == 0){ //é™åº
+                        if (pr->name < p->name){
+                            exchange(pr, p);
+                        }
+                    }
+                    break;
+                }
+                case 2:{ // å­¦å·
+                    if (n == 1){ // å‡åº
+                        if (pr->num > p->num){
+                            exchange(pr, p);
+                        }
+                    }else if (n == 0){ //é™åº
+                        if (pr->num < p->num){
+                            exchange(pr, p);
+                        }
+                    }
+                    break;
+                }
+                case 3:{ // è¯­æ–‡
+                    if (n == 1){ // å‡åº
+                        if (pr->Chineses > p->Chineses){
+                            exchange(pr, p);
+                        }
+                    }else if (n == 0){ //é™åº
+                        if (pr->Chineses < p->Chineses){
+                            exchange(pr, p);
+                        }
+                    }
+                    break;
+                }
+                case 4:{ // æ•°å­¦
+                    if (n == 1){ // å‡åº
+                        if (pr->Math > p->Math){
+                            exchange(pr, p);
+                        }
+                    }else if (n == 0){ //é™åº
+                        if (pr->Math < p->Math){
+                            exchange(pr, p);
+                        }
+                    }
+                    break;
+                }
+                case 5:{ // è‹±è¯­
+                    if (n == 1){ // å‡åº
+                        if (pr->English > p->English){
+                            exchange(pr, p);
+                        }
+                    }else if (n == 0){ //é™åº
+                        if (pr->English < p->English){
+                            exchange(pr, p);
+                        }
+                    }
+                    break;
+                }
+                case 6:{ // ä¸“ä¸šè¯¾
+                    if (n == 1){ // å‡åº
+                        if (pr->Major > p->Major){
+                            exchange(pr, p);
+                        }
+                    }else if (n == 0){ //é™åº
+                        if (pr->Major < p->Major){
+                            exchange(pr, p);
+                        }
+                    }
+                    break;
                 }
             }
             p = p->next;
@@ -432,27 +562,90 @@ void Sort(student *&L , int n){  // ²ÉÓÃÃ°ÅİÅÅĞò
         pr = pr->next;
     }
 }
+
 void Menu(){
     cout << "\n\n";
-    cout << "\t\t\t\t»¶Ó­Ê¹ÓÃ³É¼¨¹ÜÀíÏµÍ³\n";
+    cout << "\t\t\t\tæ¬¢è¿ä½¿ç”¨æˆç»©ç®¡ç†ç³»ç»Ÿ\n";
     cout << "\t*******************************************************************\n";
-    cout << "\t*                        1.³É¼¨Â¼Èë                               *\n";
-    cout << "\t*                        2.É¾³ıÑ§Éú¼ÇÂ¼                           *\n";
-    cout << "\t*                        3.ĞŞ¸ÄÑ§Éú¼ÇÂ¼                           *\n";
-    cout << "\t*                        4.´òÓ¡¼ÇÂ¼                               *\n";
-    cout << "\t*                        5.ÏÔÊ¾²¹¿¼Ãûµ¥                           *\n";
-    cout << "\t*                        6.²éÕÒÓÅĞãÑ§Éú                           *\n";
-    cout << "\t*                        7.°´³É¼¨ÅÅĞò                             *\n";
-    cout << "\t*                        *.ÍË³öÏµÍ³                               *\n";
-    cout << "\t*                        0.¹ØÓÚ                                   *\n";
+    cout << "\t*                        1.æˆç»©å½•å…¥                               *\n";
+    cout << "\t*                        2.åˆ é™¤å­¦ç”Ÿè®°å½•                           *\n";
+    cout << "\t*                        3.ä¿®æ”¹å­¦ç”Ÿè®°å½•                           *\n";
+    cout << "\t*                        4.æ‰“å°è®°å½•                               *\n";
+    cout << "\t*                        5.æ˜¾ç¤ºè¡¥è€ƒåå•                           *\n";
+    cout << "\t*                        6.æŸ¥æ‰¾ä¼˜ç§€å­¦ç”Ÿ                           *\n";
+    cout << "\t*                        7.æ’åº                                   *\n";
+    cout << "\t*                        8.æ–‡ä»¶è¯»å–                               *\n";
+    cout << "\t*                        9.å­˜å…¥æ–‡ä»¶                               *\n";
+    cout << "\t*                        *.é€€å‡ºç³»ç»Ÿ                               *\n";
+    cout << "\t*                        0.å…³äº                                   *\n";
     cout << "\t*                                                                 *\n";
-    cout << "\t*                                   								 *\n";
+    cout << "\t*                                   Design By:articalman          *\n";
     cout << "\t*******************************************************************\n";
-    cout << "ÇëÑ¡ÔñÊäÈëµÄ·½Ê½" << endl;
-    cout << "1.ÊÖ¶¯ÊäÈë    2.ÎÄ¼şÊäÈë\n";
-    int f;
-    cin >> f;
-    if (f == 2) //Èç¹ûÊäÈë2£¬´Ó1.txtµÄÎÄ±¾ÖĞ¶ÁÈëÊäÈë½á¹û(ĞèÌáÇ°×¼±¸)
-        freopen("1.txt", "r", stdin);
 }
 
+void about(){
+    cout << "\t----------------æ–°å¢å†…å®¹----------------\n\n";
+    cout << "\t1.ç•Œé¢ç¾åŒ–(Menuå‡½æ•°)\n";
+    cout << "\t2.deleteå‡½æ•°å®Œå–„åˆ é™¤æ¡ä»¶å¤šæ ·æ€§\n";
+    cout << "\t3.å¢åŠ æ–°åŠŸèƒ½(æ’åºå‡½æ•°)\n";
+    cout << "\t4.å¢åŠ æ˜¾ç¤ºè¡¥è€ƒåå•(<60)å’Œä¼˜ç§€åå•(>90)\n";
+    cout << "\t5.åœ¨ç•Œé¢å†…å®¹æ ‡æ³¨å¯¹åº”çš„å‡½æ•°åŠè´Ÿè´£äºº\n";
+    cout << "\t6.æµç¨‹å›¾å’Œæ–‡æ¡£\n";
+    cout << "\t7.æ–‡ä»¶çš„è¯»å†™æ“ä½œ\n";
+}
+
+void FileOutput(student *L){
+    FILE *fp = NULL;
+    if((fp = fopen("output.txt", "w+")) == NULL){// è‡ªåŠ¨ç”Ÿæˆï¼Œä¸ç”¨åˆ›å»º
+        cout << "Can not open this file!\n";  // è¯»å†™é”™è¯¯
+    }
+    ofstream outfile("output.txt", ios::app);  
+    //ä»¥è¿½åŠ çš„æ–¹å¼å½•å…¥ä¿¡æ¯ï¼Œç›´æ¥å°†ä¿¡æ¯è¿½åŠ åˆ°ä»¥å‰æ–‡ä»¶çš„æœ«å°¾
+
+    outfile << "å§“å    å­¦å·    è¯­æ–‡    æ•°å­¦    è‹±è¯­    ä¸“ä¸šè¯¾    æ€»æˆç»©\n";
+    while (L->next != NULL){
+        L = L->next;
+        outfile << L->name << "\t\t";
+        outfile << L->num << "\t\t" << L->Chineses << "\t\t" << L->Math << "\t\t" << L->English << "\t\t" << L->Major << "\t\t" << L->sum << '\n';
+    }
+    outfile << "\nè¡¨ä¸­äººæ•°å…±è®¡ï¼š" << amount << "äºº\n";
+    outfile.close();
+}
+
+void FileInput(student *&L){
+    FILE *fp;
+    fp = fopen("input.txt" , "a+"); 
+    // æ‰“å¼€ä¸€ä¸ªæ–‡ä»¶ï¼Œå…è®¸è¯»å†™ï¼Œå¦‚æœæ²¡æœ‰åˆ™åˆ›å»ºä¸€ä¸ª
+    ifstream inputfile("input.txt",ios::in); // è¯»å–æ–‡ä»¶ä¸­çš„å†…å®¹
+
+    student *p = L->next, *pr = L; //prèµ‹åˆå€¼ï¼Œé¿å…æ’å…¥é¦–ç»“ç‚¹çš„æ—¶å€™å¾ªç¯ä¸ä¼šæ‰§è¡Œ
+    int n;  // ä¸ªæ•°
+    inputfile >> n; 
+    while (p != NULL)
+    {
+        Next(p, pr);
+    } // å®šä½åˆ°é“¾è¡¨æœ«å°¾
+    while (n--){
+        student *p1 = new student;
+
+        string name;
+        double chinese, math, english, major, num;
+        inputfile >> name >> num >> chinese >> math >> english >> major;
+
+        amount++;
+        p1->name = name;
+        p1->num = num;
+        p1->Chineses = chinese;
+        p1->English = english;
+        p1->Math = math;
+        p1->Major = major;
+        p1->sum = p1->Chineses + p1->English + p1->Major + p1->Math;
+
+        pr->next = p1; // å’Œå‰é¢çš„èŠ‚ç‚¹ç›¸è¿
+        //pr = p1;   // æŒ‡å‘å½“å‰èŠ‚ç‚¹
+        pr = pr->next; //æŒ‡å‘åç»§ç»“ç‚¹
+        p1->next = NULL;
+        puts(""); //è¾“å‡ºæ¢è¡Œæ§åˆ¶æ ¼å¼
+    }
+    inputfile.close(); // å…³é—­æ–‡ä»¶
+}
